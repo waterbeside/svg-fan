@@ -1,13 +1,18 @@
 import { defineConfig } from 'rollup'
 import serve from 'rollup-plugin-serve'
-// import livereload from 'rollup-plugin-livereload'
+import livereload from 'rollup-plugin-livereload'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import html from '@rollup/plugin-html'
+import sass from 'rollup-plugin-sass'
 import ts from 'rollup-plugin-typescript2'
 import path from 'node:path'
+import fs from 'node:fs'
+
 const root = process.cwd()
-console.log()
-process.env.NODE_ENV = 'develoment'
+
+const demoDist = path.resolve(root, './demo/dist')
+const htmlTemplate = fs.readFileSync(path.resolve(root, './demo/index.html'), { encoding: 'utf8' })
+
 export default defineConfig({
   input: 'demo/src/index.ts',
   output: [
@@ -19,10 +24,11 @@ export default defineConfig({
   plugins: [
     nodeResolve(),
     ts(),
-    html({ title: 'SVG-FAN DEMO' }),
+    html({ title: 'SVG-FAN DEMO', template: () => htmlTemplate }),
+    livereload(demoDist),
     serve({
       open: true, // 是否打开浏览器
-      contentBase: [path.resolve(root, './demo/dist')], // 入口 html 文件位置
+      contentBase: [demoDist], // 入口 html 文件位置
       historyApiFallback: true, // 设置为 true 返回 index.html 而不是 404
       host: 'localhost', //
       port: 3005, // 端口号
@@ -41,7 +47,7 @@ export default defineConfig({
           `You can click   ${protocol}://localhost:${address.port}/  go to Browser`
         )
       }
-    })
-    // livereload()
+    }),
+    sass({ output: './demo/dist/index.css' })
   ]
 })
