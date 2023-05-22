@@ -23,8 +23,10 @@ specifiers:
   rollup-plugin-filesize: ^10.0.0
   rollup-plugin-livereload: ^2.0.5
   rollup-plugin-peer-deps-external: ^2.2.4
+  rollup-plugin-sass: ^1.12.19
   rollup-plugin-serve: ^2.0.2
   rollup-plugin-typescript2: ^0.34.1
+  sass: ^1.62.1
   ts-jest: ^29.0.5
   ts-node: ^10.9.1
   tslib: ^2.5.0
@@ -53,8 +55,10 @@ devDependencies:
   rollup-plugin-filesize: 10.0.0
   rollup-plugin-livereload: 2.0.5
   rollup-plugin-peer-deps-external: 2.2.4_rollup@3.22.0
+  rollup-plugin-sass: 1.12.19_rollup@3.22.0
   rollup-plugin-serve: 2.0.2
   rollup-plugin-typescript2: 0.34.1_oxia2nlnewxhzpcx3nyfhiq5py
+  sass: 1.62.1
   ts-jest: 29.1.0_clxy5uwjfdgq5lryf5chdxpz7e
   ts-node: 10.9.1_kad2biipqth74ckkc6ygvcanzi
   tslib: 2.5.2
@@ -2722,6 +2726,10 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
+  /immutable/4.3.0:
+    resolution: {integrity: sha512-0AOCmOip+xgJwEVTQj1EfiDDOkPmuyllDuTuEX+DDXUgapLAsBIfkg3sxCYyCEA8mQqZrrxPUGjcOQ2JS3WLkg==}
+    dev: true
+
   /import-fresh/3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -4472,6 +4480,17 @@ packages:
       rollup: 3.22.0
     dev: true
 
+  /rollup-plugin-sass/1.12.19_rollup@3.22.0:
+    resolution: {integrity: sha512-gVYQ+fKpwbIeC3tFWbtSw0kVHbDd6bpPHJ+YHpY28YRY1aS8LCrogJZmyb23fDcBn6r8eWzuC1N3jfQbCY3gMQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      '@rollup/pluginutils': 5.0.2_rollup@3.22.0
+      resolve: 1.22.2
+      sass: 1.62.1
+    transitivePeerDependencies:
+      - rollup
+    dev: true
+
   /rollup-plugin-serve/2.0.2:
     resolution: {integrity: sha512-ALqyTbPhlf7FZ5RzlbDvMYvbKuCHWginJkTo6dMsbgji/a78IbsXox+pC83HENdkTRz8OXrTj+aShp3+3ratpg==}
     dependencies:
@@ -4528,6 +4547,16 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
     optional: true
+
+  /sass/1.62.1:
+    resolution: {integrity: sha512-NHpxIzN29MXvWiuswfc1W3I0N8SXBd8UR26WntmDlRYf0bSADnwnOjsyMZ3lMezSlArD33Vs3YFhp7dWvL770A==}
+    engines: {node: '>=14.0.0'}
+    hasBin: true
+    dependencies:
+      chokidar: 3.5.3
+      immutable: 4.3.0
+      source-map-js: 1.0.2
+    dev: true
 
   /semver/5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
@@ -4625,6 +4654,11 @@ packages:
     dependencies:
       ip: 2.0.0
       smart-buffer: 4.2.0
+    dev: true
+
+  /source-map-js/1.0.2:
+    resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
+    engines: {node: '>=0.10.0'}
     dev: true
 
   /source-map-support/0.5.13:
