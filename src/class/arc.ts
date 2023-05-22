@@ -5,36 +5,44 @@ import { SvgBase } from './svgBase'
 type ArcSetting = {
   r: number
   R: number
-  center: [number, number]
+  center?: [number, number]
   startDeg?: number
   endDeg?: number
   attr?: SvgAttr
+  straighten?: boolean
   [key: string]: any
 }
 
 export class Arc extends SvgBase {
   protected _points: [Coord, Coord, Coord, Coord]
   protected _arcSetting: Omit<Required<ArcSetting>, 'attr'>
-  protected _element: SVGElement | null = null
   protected _d: string | null = null
   readonly isFull: boolean
   constructor(setting: ArcSetting) {
     super(setting)
+    this._tagName = 'path'
     const defaultSetting = {
       startDeg: 0,
-      endDeg: 360
+      endDeg: 360,
+      straighten: false
     }
+    const center: Coord =
+      setting.center === void 0
+        ? [Math.max(setting.r, setting.R), Math.max(setting.r, setting.R)]
+        : setting.center
+
     const config = Object.assign({}, defaultSetting, {
       r: setting.r,
       R: setting.R,
-      center: setting.center,
       startDeg: setting.startDeg,
-      endDeg: setting.endDeg
+      endDeg: setting.endDeg,
+      center
     })
     const { start, end, isFull } = prettyArcStartAndEnd(config.startDeg, config.endDeg)
     config.startDeg = start
     config.endDeg = end
     this.isFull = isFull
+
     this._arcSetting = config
     if (setting.attr) Object.assign(this._attr, setting.attr)
     this._points = createArcPoints(
@@ -86,18 +94,33 @@ export class Arc extends SvgBase {
     return this._d
   }
 
-  getElement(): SVGElement {
-    if (!this._element || this._resetElement) {
-      const d = this.getD()
-      const attr: SvgAttr = {
-        d
-      }
-      if (this.isFull && this.r > 0) {
-        attr['fill-rule'] = 'evenodd'
-      }
-      this._element = createSvgTag('path', Object.assign({}, this._attr, attr))
+  getElement(noChildren = false): SVGElement {
+    const d = this.getD()
+    const attr: SvgAttr = {
+      d
     }
-    this._resetElement = false
-    return this._element
+    if (this.isFull && this.r > 0) attr['fill-rule'] = 'evenodd'
+    const se = createSvgTag('path', Object.assign({}, this._attr, attr))
+    if (!noChildren) this.setChildren2Element(se)
+    return se
+  }
+
+  mount(target: HTMLElement | SVGElement | string | DocumentFragment) {
+    const el = typeof target === 'string' ? document.querySelector(target) : target
+    if (el) {
+      let thisEl = this.getElement()
+      if (!el.hasOwnProperty('tagName') || (el as HTMLElement).tagName !== 'svg') {
+        const maxR = Math.max(this.R, this.r)
+        const svg = createSvgTag('svg', {
+          width: this.center[0] + maxR,
+          height: this.center[1] + maxR
+        })
+        svg.appendChild(thisEl)
+        thisEl = svg
+      }
+      el.appendChild(thisEl)
+    } else {
+      throw new Error('The target element does not exist')
+    }
   }
 }

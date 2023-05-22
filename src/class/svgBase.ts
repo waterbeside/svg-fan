@@ -12,8 +12,10 @@ export class SvgBase {
   protected _attr: Partial<SvgAttr> = {}
   protected _resetElement: boolean = true
   readonly children: ChildrenElement[] = []
+  protected _tagName: string
   constructor(setting: SvgSetting) {
     if (setting.attr) Object.assign(this._attr, setting.attr)
+    this._tagName = 'svg'
   }
 
   /**
@@ -29,17 +31,25 @@ export class SvgBase {
     return this
   }
 
-  getElement(noChildren = false): SVGElement {
-    const svg = createSvgTag('svg')
-    if (!noChildren && this.children.length) {
+  get tagName() {
+    return this._tagName
+  }
+
+  protected setChildren2Element(el: SVGElement) {
+    if (this.children.length) {
       this.children.forEach(v => {
         if (v instanceof SvgBase) {
-          svg.appendChild(v.getElement())
+          el.appendChild(v.getElement())
         } else {
-          svg.appendChild(v)
+          el.appendChild(v)
         }
       })
     }
+  }
+
+  getElement(noChildren = false): SVGElement {
+    const svg = createSvgTag('svg')
+    if (!noChildren) this.setChildren2Element(svg)
     return svg
   }
 
@@ -54,6 +64,15 @@ export class SvgBase {
   appendTo(svgElement: ChildrenElement[]) {
     if (svgElement instanceof SvgBase) {
       svgElement.appendChild(this)
+    }
+  }
+
+  mount(target: HTMLElement | SVGElement | string) {
+    if (typeof target === 'string') {
+      const el = document.querySelector(target)
+      if (el) el.appendChild(this.getElement())
+    } else {
+      target.appendChild(this.getElement())
     }
   }
 }
