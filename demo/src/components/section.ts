@@ -1,4 +1,4 @@
-export function createSection(title: string, children: HTMLElement | string | DocumentFragment) {
+export function Section(title: string, children: HTMLElement | string | DocumentFragment) {
   const fm = document.createDocumentFragment()
   const section = document.createElement('section')
   const h2 = document.createElement('h2')

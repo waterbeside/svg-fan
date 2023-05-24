@@ -1,3 +1,14 @@
 body {
   background: #fafafa;
 }
+
+.flex-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.arc-box-item {
+  padding: 20px;
+}
