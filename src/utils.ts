@@ -1,4 +1,6 @@
-import { Coord } from '../typings/types'
+import { Coord, SvgAttr } from '../typings/types'
+import type { Arc } from './class/arc'
+import type { Fan } from './class/fan'
 
 export function deg2rad(deg: number) {
   return (deg * Math.PI) / 180
@@ -71,5 +73,64 @@ export function prettyArcStartAndEnd(
     start,
     end,
     isFull
+  }
+}
+
+export function camel2Hyphen(key: string): string {
+  let res: string = ''
+  for (let i = 0; i < key.length; i++) {
+    let k = key[i]
+    if (/([A-Z])/g.test(k)) k = `-${k}`
+    res += k
+  }
+  return res.replace(/--/g, '-').toLowerCase()
+}
+
+export function prettyAttr(attr: { [k: string]: any }) {
+  const newAttr: { [k: string]: any } = {}
+  for (let key in attr) {
+    const oKey = key
+    if (/([A-Z])/g.test(key)) key = camel2Hyphen(key)
+    newAttr[key] = attr[oKey]
+  }
+  return newAttr
+}
+
+export function computeCenter(maxR: number, attr?: SvgAttr): Coord {
+  const borderWidth = attr && attr['stroke-width'] ? attr['stroke-width'] : 0
+  return [maxR + borderWidth, maxR + borderWidth]
+}
+
+export function coumputeFirstArc(
+  n: number,
+  gap = 0
+): { start: number; end: number; preAngle: number } {
+  if (n < 1) return { start: 0, end: 360, preAngle: 360 }
+  if (n > 360) n = 360
+  const preAngle = Math.abs(360 / n - gap)
+  const arcDeg = preAngle / 2
+  return { start: -arcDeg, end: arcDeg, preAngle }
+}
+
+export function mountArc(
+  target: HTMLElement | SVGElement | string | DocumentFragment,
+  arc: Arc | Fan
+) {
+  const el = typeof target === 'string' ? document.querySelector(target) : target
+  if (el) {
+    let thisEl = arc.getElement()
+    if (!el.hasOwnProperty('tagName') || (el as HTMLElement).tagName !== 'svg') {
+      const maxR = Math.max(arc.R, arc.r)
+      const borderWidth = Number(arc.attr('stroke-width')) ?? 0
+      const svg = createSvgTag('svg', {
+        width: arc.center[0] + maxR + borderWidth * 2,
+        height: arc.center[1] + maxR + borderWidth * 2
+      })
+      svg.appendChild(thisEl)
+      thisEl = svg
+    }
+    el.appendChild(thisEl)
+  } else {
+    throw new Error('The target element does not exist')
   }
 }
