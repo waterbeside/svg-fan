@@ -4,64 +4,37 @@ import { Section } from '../components/Section'
 import { FlexBox } from '../components/FlexBox'
 import { createElement } from '../utils'
 
-export function ArcView() {
-  const title = '# Arc'
+export function TrapezoidView() {
+  const title = '# trapezoid'
   const arcSettings: ArcSetting[] = [
     {
       r: 20,
       R: 50,
       start: 0,
-      end: 360,
-      attr: {
-        fill: '#813C85'
-      }
-    },
-    {
-      r: 20,
-      R: 50,
-      start: -60,
       end: 60,
+      straighten: true,
       attr: {
-        fill: '#FFCC00'
+        fill: '#9e3944'
       }
     },
     {
       r: 20,
       R: 50,
       start: 60,
-      end: 280,
+      end: 120,
+      straighten: true,
       attr: {
-        fill: '#FF5544'
+        fill: '#F81144'
       }
     },
     {
       r: 0,
-      R: 50,
-      start: 0,
-      end: 120,
-      attr: {
-        fill: '#443C85'
-      }
-    },
-    {
-      r: 20,
       R: 60,
-      start: 120,
-      end: 320,
+      start: 135,
+      end: 225,
+      straighten: true,
       attr: {
-        stroke: '#443C85',
-        'stroke-width': 2
-      }
-    },
-    {
-      r: 40,
-      R: 50,
-      start: 0,
-      end: 360,
-      attr: {
-        fill: 'yellow',
-        stroke: '#449985',
-        'stroke-width': 3
+        fill: '#FF5544'
       }
     }
   ]
