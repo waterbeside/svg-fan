@@ -1,5 +1,5 @@
 import type { SvgAttr } from '../../typings/types'
-import { createSvgTag } from '../utils'
+import { createSvgTag, prettyAttr, camel2Hyphen } from '../utils'
 
 type SvgSetting = {
   attr?: SvgAttr
@@ -9,24 +9,31 @@ type SvgSetting = {
 type ChildrenElement = SVGElement | SvgBase
 
 export class SvgBase {
-  protected _attr: Partial<SvgAttr> = {}
+  protected _attr: Partial<SvgAttr> = {
+    fill: 'transparent'
+  }
   protected _resetElement: boolean = true
   readonly children: ChildrenElement[] = []
   protected _tagName: string
   constructor(setting: SvgSetting) {
-    if (setting.attr) Object.assign(this._attr, setting.attr)
+    if (setting.attr) Object.assign(this._attr, prettyAttr(setting.attr))
     this._tagName = 'svg'
   }
 
   /**
-   * 设置svg属性
+   * 设置或取得svg属性
    * @param key 如果
    */
+  attr(key: string): string | null
   attr(key: object): this
   attr(key: string, value: number | string): this
-  attr(key: string | object, value?: number | string): this {
+  attr(key: string | object, value?: number | string): this | string | null {
+    if (typeof key === 'string' && value === void 0) {
+      key = camel2Hyphen(key)
+      return this._attr[key] ?? null
+    }
     this._resetElement = true
-    if (typeof key === 'string') this._attr.key = value
+    if (typeof key === 'string') (key = camel2Hyphen(key)), (this._attr.key = value)
     else Object.assign(this._attr, key)
     return this
   }
