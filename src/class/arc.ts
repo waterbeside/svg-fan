@@ -1,4 +1,5 @@
 import {
+  arcPoint,
   createArcPoints,
   createSvgTag,
   deg2rad,
@@ -6,7 +7,8 @@ import {
   circlePathD,
   prettyAttr,
   computeCenter,
-  mountArc
+  mountArc,
+  getTwoPointsCenter
 } from '../utils'
 import type { Coord, SvgAttr } from '../../typings/types'
 import { SvgBase } from './svgBase'
@@ -19,6 +21,8 @@ export type ArcSetting = {
   end?: number
   attr?: SvgAttr
   straighten?: boolean
+  text?: string | null
+  textAttr?: SvgAttr
   [key: string]: any
 }
 
@@ -35,7 +39,9 @@ export class Arc extends SvgBase {
       start: 0,
       end: 360,
       straighten: false,
-      attr: this._attr
+      attr: this._attr,
+      text: null,
+      textAttr: {}
     }
     const center: Coord =
       setting.center === void 0
@@ -46,6 +52,9 @@ export class Arc extends SvgBase {
     const { start, end, isFull } = prettyArcStartAndEnd(config.start, config.end)
     config.start = start
     config.end = end
+
+    if (setting.textAttr) Object.assign(config.textAttr, prettyAttr(setting.textAttr))
+
     this.isFull = isFull
 
     this._setting = config
@@ -72,6 +81,21 @@ export class Arc extends SvgBase {
     return this._setting.start
   }
 
+  get straighten() {
+    return this._setting.straighten && this.end - this.start < 180
+  }
+
+  get arcCenter(): Coord {
+    if (this.straighten) {
+      const s = getTwoPointsCenter(this._points[0], this._points[1])
+      const e = getTwoPointsCenter(this._points[2], this._points[3])
+      return getTwoPointsCenter(s, e)
+    }
+    const r = Math.abs(this.R + this.r) / 2
+    const deg = (this.end + this.start) / 2
+    return arcPoint(this.center, r, deg)
+  }
+
   getD() {
     if (!this._d) {
       if (this.isFull) this._d = circlePathD(this.center, this.R, this.r)
@@ -80,7 +104,7 @@ export class Arc extends SvgBase {
         const flag = deg2rad(this.end) - deg2rad(this.start) > Math.PI ? 1 : 0
         const R = this.R
         const r = this.r
-        if (this._setting.straighten && this.end - this.start < 180) {
+        if (this.straighten) {
           this._d = `M ${P[0][0]} ${P[0][1]} L ${P[1][0]} ${P[1][1]} L ${P[2][0]} ${P[2][1]} L ${P[3][0]} ${P[3][1]} L ${P[0][0]} ${P[0][1]} Z`
         } else {
           this._d = `M ${P[0][0]} ${P[0][1]} L ${P[1][0]} ${P[1][1]} A ${R} ${R} 0 ${flag} 1 ${P[2][0]} ${P[2][1]} L ${P[3][0]} ${P[3][1]} A ${r} ${r}  0 ${flag} 0 ${P[0][0]} ${P[0][1]} Z`
@@ -90,14 +114,40 @@ export class Arc extends SvgBase {
     return this._d
   }
 
-  getElement(noChildren = false): SVGElement {
+  getElement(setting?: { noChildren: boolean; showText?: boolean }): SVGElement {
+    const noChildren = setting?.noChildren || false
+    const showText = setting?.showText || true
     const d = this.getD()
     const attr: SvgAttr = {
       d
     }
     if (this.isFull && this.r > 0) attr['fill-rule'] = 'evenodd'
-    const se = createSvgTag('path', Object.assign({}, this._attr, attr))
+    let se = createSvgTag('path', Object.assign({}, this._attr, attr))
     if (!noChildren) this.setChildren2Element(se)
+    if (showText && this._setting.text) {
+      const arcCenter = this.arcCenter
+      const centerDeg = (this.start + this.end) >> 1
+      // const center = this.center
+      const t = createSvgTag(
+        'text',
+        Object.assign(
+          {
+            y: arcCenter[1],
+            x: arcCenter[0],
+            fill: 'black',
+            'text-anchor': 'middle',
+            'dominant-baseline': 'middle',
+            transform: `rotate(${centerDeg} ${arcCenter[0]} ${arcCenter[1]})`
+          },
+          this._setting.textAttr
+        )
+      )
+      const g = createSvgTag('g')
+      t.innerHTML = this._setting.text
+      g.appendChild(se)
+      g.appendChild(t)
+      se = g
+    }
     return se
   }
 
