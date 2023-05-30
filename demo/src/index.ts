@@ -3,6 +3,7 @@ import './index.scss'
 import { ArcView } from './views/ArcView'
 import { TrapezoidView } from './views/TrapezoidView'
 import { FanView } from './views/FanView'
+import { ReadMeView } from './views/ReadMe'
 
 declare global {
   interface Window {
@@ -20,6 +21,7 @@ declare global {
   app.appendChild(ArcView())
   app.appendChild(TrapezoidView())
   app.appendChild(FanView())
+  app.appendChild(ReadMeView())
   document.getElementsByTagName('body')[0]?.appendChild(app)
 })()
 
