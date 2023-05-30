@@ -32,7 +32,7 @@ export function ReadMeView() {
       const setting: ArcSetting = {
         r: 30, // 内径
         R: 50, // 外径
-        start: 0, // 当起始角与结束角度之差大于360度时，将合变成一个圆
+        start: 0, // 当起始角与结束角度之差大于360度时，将变成一个圆
         end: 360, // 圆弧结速角度
         attr: {
           // 圆弧的svg属性设置
@@ -49,8 +49,8 @@ export function ReadMeView() {
       const setting: ArcSetting = {
         r: 0, // 内径为0时，即画扇形
         R: 50, // 外径
-        start: 0, // 当起始角与结束角度之差大于360度时，将合变成一个圆
-        end: 90, // 圆弧结速角度
+        start: 0,
+        end: 90,
         attr: {
           // 圆弧的svg属性设置
           fill: '#889C85'
@@ -64,10 +64,10 @@ export function ReadMeView() {
     function () {
       const text = createElement('h3', '把圆弧拉直变成梯形')
       const setting: ArcSetting = {
-        r: 20, // 内径为0时，即画扇形
+        r: 20, // 内径
         R: 50, // 外径
-        start: -30, // 当起始角与结束角度之差大于360度时，将合变成一个圆
-        end: 30, // 圆弧结速角度
+        start: -30,
+        end: 30,
         straighten: true, // 设置straighten为true时，把弧线拉直，但起点和终点的角度差必须少于180度
         attr: {
           // 圆弧的svg属性设置
@@ -82,12 +82,11 @@ export function ReadMeView() {
     function () {
       const text = createElement('h3', '在圆弧内添加文字')
       const setting: ArcSetting = {
-        r: 40, // 内径为0时，即画扇形
+        r: 40, // 内径
         R: 80, // 外径
-        start: -30, // 当起始角与结束角度之差大于360度时，将合变成一个圆
-        end: 30, // 圆弧结速角度
+        start: -30,
+        end: 30,
         attr: {
-          // 圆弧的svg属性设置
           fill: '#8870ee'
         },
         text: '离',
@@ -105,11 +104,10 @@ export function ReadMeView() {
     function () {
       const text = createElement('h3', '把圆等分成6份')
       const setting: FanSetting = {
-        r: 0, // 内径为0时，即画扇形
+        r: 0, // 内径
         R: 100, // 外径
         n: 6, // 分成6份
         attr: {
-          // 圆弧的svg属性设置
           fill: '#5faf65',
           strokeWidth: 4,
           stroke: '#2f4f33'
@@ -123,12 +121,11 @@ export function ReadMeView() {
     function () {
       const text = createElement('h3', '设置每份弧的间距')
       const setting: FanSetting = {
-        r: 20, // 内径为0时，即画扇形
+        r: 20, // 内径
         R: 100, // 外径
         n: 6, // 分成6份
-        gap: 10,
+        gap: 10, // 每份相隔多少角度
         attr: {
-          // 圆弧的svg属性设置
           fill: '#5faf65',
           strokeWidth: 4,
           stroke: '#2f4f33'
@@ -142,7 +139,7 @@ export function ReadMeView() {
     function () {
       const text = createElement('h3', '把圆等分成4份, 每份颜色单独设置')
       const setting: FanSetting = {
-        r: 60, // 内径为0时，即画扇形
+        r: 60, // 内径
         R: 100, // 外径
         n: 4, // 分成4份,
         attr: {
@@ -180,7 +177,7 @@ export function ReadMeView() {
     function () {
       const text = createElement('h3', '设置start值，使第一份弧的起始角度为0')
       const setting: FanSetting = {
-        r: 60, // 内径为0时，即画扇形
+        r: 60, // 内径
         R: 100, // 外径
         n: 4, // 分成4份,
         start: 0, // 通过设置start值，可设置第一份弧的起始角度，否则第一份弧形的中心会位默认于正上方。
@@ -225,7 +222,8 @@ export function ReadMeView() {
         straighten: true,
         attr: {
           strokeWidth: 1,
-          stroke: '#999'
+          stroke: '#999',
+          fill: '#fff'
         },
         arcSetting: [
           {
@@ -234,7 +232,7 @@ export function ReadMeView() {
               fill: 'red'
             },
             attr: {
-              fill: '#ff889921'
+              fill: '#ffeeee'
             }
           },
           {
@@ -252,7 +250,7 @@ export function ReadMeView() {
               fill: 'blue'
             },
             attr: {
-              fill: '#449aff18'
+              fill: '#eeeeff'
             }
           },
           {
