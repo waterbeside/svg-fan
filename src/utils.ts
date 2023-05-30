@@ -38,6 +38,40 @@ export function createSvgTag(tagName: string, attributes?: { [k: string]: string
   return tag
 }
 
+export function createElement(
+  tagName: string,
+  children?:
+    | (HTMLElement | DocumentFragment | string | SVGElement)[]
+    | string
+    | HTMLElement
+    | DocumentFragment
+    | SVGElement,
+  attr?: { class?: string | string[]; [k: string]: any }
+) {
+  const el = document.createElement(tagName)
+  if (attr) {
+    for (const k in attr) {
+      const value = attr[k]
+      if (k === 'class') {
+        const classList: string[] = typeof value === 'string' ? [value] : value
+        classList.forEach(item => {
+          el.classList.add(item)
+        })
+      } else el.setAttribute(k, String(attr[k]))
+    }
+  }
+  if (children && Array.isArray(children) && children.length) {
+    children.forEach(item => {
+      const itemEl = typeof item === 'string' ? document.createTextNode(item) : item
+      el.appendChild(itemEl)
+    })
+  } else if (children) {
+    if (typeof children === 'string') el.innerHTML = children
+    else el.appendChild(children as HTMLElement)
+  }
+  return el
+}
+
 /**
  * 取得弧形的四个角点
  * @param center 圆的中心点

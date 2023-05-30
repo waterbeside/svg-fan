@@ -1,8 +1,7 @@
 import { Fan, FanSetting } from '../../../src/class/fan'
-// import { createSvgTag } from '../../src/utils'
+import { createElement } from '../../../src/utils'
 import { Section } from '../components/Section'
 import { FlexBox } from '../components/FlexBox'
-import { createElement } from '../utils'
 
 export function FanView() {
   const title = '# Fan'
@@ -11,6 +10,17 @@ export function FanView() {
       r: 50,
       R: 100,
       n: 8,
+      attr: {
+        strokeWidth: 1,
+        stroke: '#999'
+      },
+      arcSetting: []
+    },
+    {
+      r: 50,
+      R: 100,
+      n: 6,
+      gap: 20,
       attr: {
         strokeWidth: 1,
         stroke: '#999'

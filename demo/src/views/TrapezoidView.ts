@@ -1,8 +1,7 @@
 import { Arc, ArcSetting } from '../../../src/class/arc'
-// import { createSvgTag } from '../../src/utils'
+import { createElement } from '../../../src/utils'
 import { Section } from '../components/Section'
 import { FlexBox } from '../components/FlexBox'
-import { createElement } from '../utils'
 
 export function TrapezoidView() {
   const title = '# trapezoid'
