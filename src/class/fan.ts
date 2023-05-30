@@ -69,12 +69,18 @@ export class Fan extends SvgBase {
     return this._setting.R
   }
 
-  getElement(noChildren?: boolean, tag = 'g'): SVGElement {
-    const g = createSvgTag(tag)
-    for (let i = 0; i < this.arcs.length; i++) {
-      g.appendChild(this.arcs[i].getElement(false))
+  getElement(setting?: { noChildren?: boolean; tag?: string; showText?: boolean }): SVGElement {
+    const opt = {
+      noChildren: false,
+      tag: 'g',
+      showText: true
     }
-    if (!noChildren) this.setChildren2Element(g)
+    Object.assign(opt, setting ?? {})
+    const g = createSvgTag(opt.tag)
+    for (let i = 0; i < this.arcs.length; i++) {
+      g.appendChild(this.arcs[i].getElement({ noChildren: opt.noChildren, showText: opt.showText }))
+    }
+    if (!opt.noChildren) this.setChildren2Element(g)
     return g
   }
 

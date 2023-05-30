@@ -54,7 +54,8 @@ export class SvgBase {
     }
   }
 
-  getElement(noChildren = false): SVGElement {
+  getElement(setting?: { noChildren: boolean }): SVGElement {
+    const noChildren = setting?.noChildren || false
     const svg = createSvgTag('svg')
     if (!noChildren) this.setChildren2Element(svg)
     return svg
