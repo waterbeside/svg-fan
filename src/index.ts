@@ -1,1 +1,2 @@
-export { Arc } from './class/arc'
+export { Arc, type ArcSetting } from './class/arc'
+export { Fan, type FanSetting } from './class/fan'
