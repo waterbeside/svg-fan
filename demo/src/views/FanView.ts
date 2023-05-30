@@ -11,17 +11,6 @@ export function FanView() {
       r: 50,
       R: 100,
       n: 8,
-      straighten: true,
-      attr: {
-        strokeWidth: 1,
-        stroke: '#999'
-      },
-      arcSetting: []
-    },
-    {
-      r: 50,
-      R: 100,
-      n: 8,
       attr: {
         strokeWidth: 1,
         stroke: '#999'
@@ -56,6 +45,48 @@ export function FanView() {
           attr: {
             fill: '#fff'
           }
+        }
+      ]
+    },
+    {
+      r: 50,
+      R: 100,
+      n: 8,
+      straighten: true,
+      attr: {
+        strokeWidth: 1,
+        stroke: '#999'
+      },
+      arcSetting: [
+        {
+          text: '離',
+          textAttr: {
+            fill: 'red'
+          }
+        },
+        {
+          text: '坤'
+        },
+        {
+          text: '兌'
+        },
+        {
+          text: '乾'
+        },
+        {
+          text: '坎',
+          textAttr: {
+            fill: 'blue'
+          }
+        },
+        {
+          text: '艮'
+        },
+        {
+          text: '震'
+        },
+        {
+          text: '巽'
         }
       ]
     }

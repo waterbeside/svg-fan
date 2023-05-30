@@ -41,6 +41,12 @@ export function ArcView() {
       end: 120,
       attr: {
         fill: '#443C85'
+      },
+      text: 'text',
+      textAttr: {
+        fill: '#fff',
+        fontSize: 16,
+        fontWeight: 700
       }
     },
     {
