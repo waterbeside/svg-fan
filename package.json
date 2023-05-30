@@ -4,7 +4,7 @@
   "description": "This is a tool that can draw fans, arcs, or split circles.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "types": "typings/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "demo": "cross-env NODE_ENV=development rollup -c ./demo/rollup.config.ts --configPlugin typescript  -w ",
     "build": "cross-env NODE_ENV=production rollup -c --configPlugin typescript",
