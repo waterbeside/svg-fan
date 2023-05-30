@@ -2,6 +2,11 @@ import { Coord, SvgAttr } from '../typings/types'
 import type { Arc } from './class/arc'
 import type { Fan } from './class/fan'
 
+/**
+ * 角度转弧度
+ * @param deg 角度
+ * @returns 弧度
+ */
 export function deg2rad(deg: number) {
   return (deg * Math.PI) / 180
 }
@@ -33,6 +38,15 @@ export function createSvgTag(tagName: string, attributes?: { [k: string]: string
   return tag
 }
 
+/**
+ * 取得弧形的四个角点
+ * @param center 圆的中心点
+ * @param r 内半径
+ * @param R 外半径
+ * @param startDeg 开始角度
+ * @param endDeg 结速度度
+ * @returns 返回四个点坐标
+ */
 export function createArcPoints(
   center: Coord,
   r: number,
@@ -48,6 +62,13 @@ export function createArcPoints(
   ]
 }
 
+/**
+ * 取得svg圆路径的d属性
+ * @param center 中心点
+ * @param R 外半径
+ * @param r 内半径
+ * @returns d
+ */
 export function circlePathD(center: Coord, R: number, r = 0) {
   const [x, y] = center
   if (r <= 0) {
@@ -58,6 +79,12 @@ export function circlePathD(center: Coord, R: number, r = 0) {
   } ${y} A ${r} ${r} 0 1 1 ${x + r} ${y} A ${r} ${r} 1 1 1 ${x - r} ${y} Z`
 }
 
+/**
+ * 美化起点和终点值
+ * @param start 起点角度
+ * @param end 终点角度
+ * @returns [start, end, isFull]
+ */
 export function prettyArcStartAndEnd(
   start: number,
   end: number
@@ -76,6 +103,11 @@ export function prettyArcStartAndEnd(
   }
 }
 
+/**
+ * 驼峰命名转连接符命名
+ * @param key 原名
+ * @returns 转换后的名
+ */
 export function camel2Hyphen(key: string): string {
   let res: string = ''
   for (let i = 0; i < key.length; i++) {
@@ -86,6 +118,11 @@ export function camel2Hyphen(key: string): string {
   return res.replace(/--/g, '-').toLowerCase()
 }
 
+/**
+ * 美化svg输入属性，主要处理了以驼峰命名的属性
+ * @param attr svg属性设定
+ * @returns 处理后的属性设定
+ */
 export function prettyAttr(attr: { [k: string]: any }) {
   const newAttr: { [k: string]: any } = {}
   for (let key in attr) {
@@ -96,11 +133,23 @@ export function prettyAttr(attr: { [k: string]: any }) {
   return newAttr
 }
 
+/**
+ * 通过半径计算中心点
+ * @param maxR 半径
+ * @param attr svg属性
+ * @returns [number, number]
+ */
 export function computeCenter(maxR: number, attr?: SvgAttr): Coord {
   const borderWidth = attr && attr['stroke-width'] ? attr['stroke-width'] : 0
   return [maxR + borderWidth, maxR + borderWidth]
 }
 
+/**
+ * 计算Fan类里第一个Arc的起点角
+ * @param n 把圆分成多少份
+ * @param gap 每分相格多少度
+ * @returns {StaticRange, end, preAngle}
+ */
 export function coumputeFirstArc(
   n: number,
   gap = 0
@@ -112,6 +161,11 @@ export function coumputeFirstArc(
   return { start: -arcDeg, end: arcDeg, preAngle }
 }
 
+/**
+ * 把Arc或Fan对象挂载到Element上
+ * @param target 目标element
+ * @param arc Arc或Fan对象
+ */
 export function mountArc(
   target: HTMLElement | SVGElement | string | DocumentFragment,
   arc: Arc | Fan
@@ -133,4 +187,14 @@ export function mountArc(
   } else {
     throw new Error('The target element does not exist')
   }
+}
+
+/**
+ * 取得两点中间的坐标
+ * @param p1 点1的坐标
+ * @param p2 点2的坐标
+ * @returns 中间点坐标
+ */
+export function getTwoPointsCenter(p1: Coord, p2: Coord): Coord {
+  return [(p2[0] + p1[0]) >> 1, (p2[1] + p1[1]) >> 1]
 }
