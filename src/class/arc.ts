@@ -53,7 +53,8 @@ export class Arc extends SvgBase {
     config.start = start
     config.end = end
 
-    if (setting.textAttr) Object.assign(config.textAttr, prettyAttr(setting.textAttr))
+    if (setting.textAttr)
+      config.textAttr = Object.assign(prettyAttr(config.textAttr), prettyAttr(setting.textAttr))
 
     this.isFull = isFull
 
